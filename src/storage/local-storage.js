@@ -1,6 +1,6 @@
 import { $window } from '../globals.js';
 
-class LocalStorage {
+export default class LocalStorage {
   constructor(namespace) {
     this.namespace = namespace || null
   }
@@ -24,5 +24,3 @@ class LocalStorage {
     return key;
   }
 }
-
-export default LocalStorage

@@ -1,6 +1,6 @@
 {
   "name": "@mdornian/vue-authenticate",
-  "version": "1.4.1",
+  "version": "1.4.7",
   "description": "Authentication library for Vue.js",
   "main": "dist/vue-authenticate.min.js",
   "module": "dist/vue-authenticate.es2015.js",
@@ -43,24 +43,24 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.4.3",
-    "@babel/preset-env": "^7.4.3",
-    "babel-loader": "^8.0.5",
+    "@babel/core": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "babel-loader": "^8.1.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-es2015-rollup": "^3.0.0",
-    "body-parser": "^1.17.1",
-    "concurrently": "^4.1.0",
+    "body-parser": "^1.19.0",
+    "concurrently": "^4.1.2",
     "connect-history-api-fallback": "^1.6.0",
     "copyfiles": "^2.3.0",
     "cors": "^2.8.5",
-    "express": "^4.16.4",
+    "express": "^4.17.1",
     "gulp": "3.9.1",
     "gulp-connect": "^5.7.0",
     "gulp-webpack": "^1.5.0",
     "node-dev": "^3.1.3",
     "oauth": "^0.9.15",
     "oauth-signature": "^1.3.1",
-    "request": "^2.81.0",
+    "request": "^2.88.2",
     "rollup": "^0.41.6",
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-buble": "^0.15.0",
@@ -71,10 +71,10 @@
     "uglify-js": "^2.8.22",
     "unix-timestamp": "^0.2.0",
     "vinyl-source-stream": "^1.1.0",
-    "vue-router": "^3.0.5",
-    "vuex": "^3.1.0",
-    "webpack": "^4.30.0",
-    "webpack-dev-server": "^3.3.1"
+    "vue-router": "^3.3.4",
+    "vuex": "^3.5.1",
+    "webpack": "^4.43.0",
+    "webpack-dev-server": "^3.11.0"
   },
   "peerDependencies": {
     "acorn-dynamic-import": "^4.0.0",
@@ -99,10 +99,10 @@
     "oauth 2.0"
   ],
   "dependencies": {
-    "acorn": "^6.1.1",
-    "ajv": "^6.10.0",
-    "axios": "^0.18.0",
-    "vue": "^2.6.10",
-    "vue-axios": "^2.1.4"
+    "acorn": "^6.4.1",
+    "ajv": "^6.12.3",
+    "axios": "^0.18.1",
+    "vue": "^2.6.11",
+    "vue-axios": "^2.1.5"
   }
 }

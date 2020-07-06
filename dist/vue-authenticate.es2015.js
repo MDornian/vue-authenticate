@@ -1,5 +1,5 @@
 /*!
- * vue-authenticate v1.4.1
+ * vue-authenticate v1.4.7
  * https://github.com/mdornian/vue-authenticate
  * Released under the MIT License.
  */
@@ -765,23 +765,23 @@ CookieStorage.prototype._setCookie = function _setCookie (cookie) {
   } catch (e) {}
 };
 
-var LocalStorage$1 = function LocalStorage(namespace) {
+var LocalStorage = function LocalStorage(namespace) {
   this.namespace = namespace || null;
 };
 
-LocalStorage$1.prototype.setItem = function setItem (key, value) {
+LocalStorage.prototype.setItem = function setItem (key, value) {
   $window.localStorage.setItem(this._getStorageKey(key), value);
 };
 
-LocalStorage$1.prototype.getItem = function getItem (key) {
+LocalStorage.prototype.getItem = function getItem (key) {
   return $window.localStorage.getItem(this._getStorageKey(key))
 };
 
-LocalStorage$1.prototype.removeItem = function removeItem (key) {
+LocalStorage.prototype.removeItem = function removeItem (key) {
   $window.localStorage.removeItem(this._getStorageKey(key));
 };
 
-LocalStorage$1.prototype._getStorageKey = function _getStorageKey (key) {
+LocalStorage.prototype._getStorageKey = function _getStorageKey (key) {
   if (this.namespace) {
     return [this.namespace, key].join('.')
   }
@@ -840,12 +840,15 @@ var Storage = function Storage(options) {
 
   // Set the initial storage type
   var storageType = options.defaultStorageType || 'memoryStorage';
-  var storageLocations = [];
+  var storageLocations = {};
 
   Object.defineProperties(this, {
     storageType: {
       get: function get() {
         return storageType
+      },
+      set: function set(newValue) {
+        storageType = newValue;
       }
     },
 
@@ -856,28 +859,28 @@ var Storage = function Storage(options) {
     }
   });
 
-  loadStorageLocations();
+  this.loadStorageLocations(options);
 
   // Determine if the token is already in storage.If so, override the storageType to that location
-  for (var property in storageLocations) {
-    if (storageLocations[property].getItem()) {
+  for (var property in this$1.storageLocations) {
+    if (this$1.storageLocations[property].getItem()) {
       this$1.storageType = property;
       break
     }
   }
 };
 
-Storage.prototype.loadStorageLocations = function loadStorageLocations () {
+Storage.prototype.loadStorageLocations = function loadStorageLocations (options) {
   try {
     $window.localStorage.setItem('testKey', 'test');
     $window.localStorage.removeItem('testKey');
-    this.storageLocations['localStorage'] = new LocalStorage$1(options.storageNamespace);
+    this.storageLocations['localStorage'] = new LocalStorage(options.storageNamespace);
   } catch(e) {}
 
   try {
     $window.sessionStorage.setItem('testKey', 'test');
     $window.sessionStorage.removeItem('testKey');
-    this.storageLocations['sessionStorage'] = new LocalStorage(options.storageNamespace);
+    this.storageLocations['sessionStorage'] = new SessionStorage(options.storageNamespace);
   } catch (e) {}
 
   this.storageLocations['cookieStorage'] = new CookieStorage(options.cookieStorage);
@@ -888,7 +891,7 @@ Storage.prototype.loadStorageLocations = function loadStorageLocations () {
 Storage.prototype.setStorageType = function setStorageType (storageType, key) {
     var this$1 = this;
 
-  for (var property in storageLocations) {
+  for (var property in this$1.storageLocations) {
     if (property === storageType) {
       this$1.storageType = storageType;
     } else {
@@ -900,15 +903,15 @@ Storage.prototype.setStorageType = function setStorageType (storageType, key) {
 };
 
 Storage.prototype.setItem = function setItem (key, value) {
-  storageLocations[this.storageType].setItem(key, value);
+  this.storageLocations[this.storageType].setItem(key, value);
 };
 
 Storage.prototype.getItem = function getItem (key) {
-  return storageLocations[this.storageType].getItem(key)
+  return this.storageLocations[this.storageType].getItem(key)
 };
 
 Storage.prototype.removeItem = function removeItem (key) {
-  storageLocations[this.storageType].removeItem(key);
+  this.storageLocations[this.storageType].removeItem(key);
 };
 
 /**

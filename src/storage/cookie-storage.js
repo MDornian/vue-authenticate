@@ -6,7 +6,7 @@ import {
 } from '../utils.js';
 import { getCookieDomainUrl } from '../options.js';
 
-class CookieStorage {
+export default class CookieStorage {
   constructor(defaultOptions) {
     this._defaultOptions = objectExtend({
       domain: getCookieDomainUrl(),
@@ -51,5 +51,3 @@ class CookieStorage {
     } catch (e) {}
   }
 }
-
-export default CookieStorage

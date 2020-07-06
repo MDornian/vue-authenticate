@@ -1,4 +1,4 @@
-class MemoryStorage {
+export default class MemoryStorage {
   constructor(namespace) {
     this.namespace = namespace || null
     this._storage = {}
@@ -23,5 +23,3 @@ class MemoryStorage {
     return key;
   }
 }
-
-export default MemoryStorage

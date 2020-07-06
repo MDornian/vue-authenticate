@@ -1,6 +1,6 @@
 import { $window } from '../globals.js';
 
-class SessionStorage {
+export default class SessionStorage {
   constructor(namespace) {
     this.namespace = namespace || null
   }
@@ -24,5 +24,3 @@ class SessionStorage {
     return key;
   }
 }
-
-export default LocalStorage
