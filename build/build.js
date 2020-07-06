@@ -6,7 +6,7 @@ var package = require('../package.json');
 var banner =
     "/*!\n" +
     " * vue-authenticate v" + package.version + "\n" +
-    " * https://github.com/dgrubelic/vue-authenticate\n" +
+    " * https://github.com/mdornian/vue-authenticate\n" +
     " * Released under the MIT License.\n" +
     " */\n";
 

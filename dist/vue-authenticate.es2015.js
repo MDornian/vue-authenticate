@@ -1,6 +1,6 @@
 /*!
  * vue-authenticate v1.4.1
- * https://github.com/dgrubelic/vue-authenticate
+ * https://github.com/mdornian/vue-authenticate
  * Released under the MIT License.
  */
 
@@ -558,7 +558,7 @@ var defaultOptions = {
   loginUrl: '/auth/login',
   registerUrl: '/auth/register',
   logoutUrl: null,
-  storageType: 'localStorage',
+  defaultStorageType: 'localStorage',
   storageNamespace: 'vue-authenticate',
   cookieStorage: {
     domain: getCookieDomainUrl(),
@@ -835,31 +835,81 @@ SessionStorage.prototype._getStorageKey = function _getStorageKey (key) {
   return key;
 };
 
-function StorageFactory(options) {
-  switch (options.storageType) {
-    case 'localStorage':
-      try {
-        $window.localStorage.setItem('testKey', 'test');
-        $window.localStorage.removeItem('testKey');
-        return new LocalStorage$1(options.storageNamespace)
-      } catch(e) {}
+var Storage = function Storage(options) {
+  var this$1 = this;
 
-    case 'sessionStorage':
-      try {
-        $window.sessionStorage.setItem('testKey', 'test');
-        $window.sessionStorage.removeItem('testKey');
-        return new LocalStorage(options.storageNamespace)
-      } catch (e) {}
-      
-    case 'cookieStorage':
-      return new CookieStorage(options.cookieStorage);
+  // Set the initial storage type
+  var storageType = options.defaultStorageType || 'memoryStorage';
+  var storageLocations = [];
 
-    case 'memoryStorage': 
-    default:
-      return new MemoryStorage(options.storageNamespace)
-      break;
+  Object.defineProperties(this, {
+    storageType: {
+      get: function get() {
+        return storageType
+      }
+    },
+
+    storageLocations: {
+      get: function get() {
+        return storageLocations
+      }
+    }
+  });
+
+  loadStorageLocations();
+
+  // Determine if the token is already in storage.If so, override the storageType to that location
+  for (var property in storageLocations) {
+    if (storageLocations[property].getItem()) {
+      this$1.storageType = property;
+      break
+    }
   }
-}
+};
+
+Storage.prototype.loadStorageLocations = function loadStorageLocations () {
+  try {
+    $window.localStorage.setItem('testKey', 'test');
+    $window.localStorage.removeItem('testKey');
+    this.storageLocations['localStorage'] = new LocalStorage$1(options.storageNamespace);
+  } catch(e) {}
+
+  try {
+    $window.sessionStorage.setItem('testKey', 'test');
+    $window.sessionStorage.removeItem('testKey');
+    this.storageLocations['sessionStorage'] = new LocalStorage(options.storageNamespace);
+  } catch (e) {}
+
+  this.storageLocations['cookieStorage'] = new CookieStorage(options.cookieStorage);
+  this.storageLocations['memoryStorage'] = new MemoryStorage(options.storageNamespace);
+};
+
+// Set the storage type.This is generally a user level change.For example, the user logs in and decides whether to remain logged in (home, cell phone) or log out automatically when they leave (library, internet cafe)
+Storage.prototype.setStorageType = function setStorageType (storageType, key) {
+    var this$1 = this;
+
+  for (var property in storageLocations) {
+    if (property === storageType) {
+      this$1.storageType = storageType;
+    } else {
+      if (key) {
+        this$1.storageLocations[property].removeItem(key);
+      }
+    }
+  }
+};
+
+Storage.prototype.setItem = function setItem (key, value) {
+  storageLocations[this.storageType].setItem(key, value);
+};
+
+Storage.prototype.getItem = function getItem (key) {
+  return storageLocations[this.storageType].getItem(key)
+};
+
+Storage.prototype.removeItem = function removeItem (key) {
+  storageLocations[this.storageType].removeItem(key);
+};
 
 /**
  * OAuth2 popup management class
@@ -1215,7 +1265,7 @@ OAuth2.prototype._stringifyRequestParams = function _stringifyRequestParams () {
 var VueAuthenticate = function VueAuthenticate($http, overrideOptions) {
   var options = objectExtend({}, defaultOptions);
   options = objectExtend(options, overrideOptions);
-  var storage = StorageFactory(options);
+  var storage = new Storage(options);
 
   Object.defineProperties(this, {
     $http: {
@@ -1325,7 +1375,7 @@ VueAuthenticate.prototype.getPayload = function getPayload () {
  * @param{Object} requestOptions Request options
  * @return {Promise}             Request promise
  */
-VueAuthenticate.prototype.login = function login (user, requestOptions) {
+VueAuthenticate.prototype.login = function login (user, requestOptions, storageType) {
     var this$1 = this;
 
   requestOptions = requestOptions || {};
@@ -1335,9 +1385,21 @@ VueAuthenticate.prototype.login = function login (user, requestOptions) {
   requestOptions.withCredentials = requestOptions.withCredentials || this.options.withCredentials;
 
   return this.$http(requestOptions).then(function (response) {
+    if (storageType) {
+      this$1.setStorageType(storageType);
+    }
+
     this$1.setToken(response);
     return response
   })
+};
+
+/**
+ * Set the storage type.This is generally a user level change.For example, the user logs in and decides whether to remain logged in (home, cell phone) or log out automatically when they leave (library, internet cafe)
+ * @param{String} storageType  The type of storage.Accepted values are: cookieStorage, localStorage, memoryStorage, sessionStorage
+ */
+VueAuthenticate.prototype.setStorageType = function setStorageType (storageType) {
+  this.storage.setStorageType(storageType, this.tokenName);
 };
 
 /**

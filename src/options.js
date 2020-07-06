@@ -32,7 +32,7 @@ export default {
   loginUrl: '/auth/login',
   registerUrl: '/auth/register',
   logoutUrl: null,
-  storageType: 'localStorage',
+  defaultStorageType: 'localStorage',
   storageNamespace: 'vue-authenticate',
   cookieStorage: {
     domain: getCookieDomainUrl(),

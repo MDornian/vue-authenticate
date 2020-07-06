@@ -1,5 +1,5 @@
 {
-  "name": "vue-authenticate",
+  "name": "@mdornian/vue-authenticate",
   "version": "1.4.1",
   "description": "Authentication library for Vue.js",
   "main": "dist/vue-authenticate.min.js",
@@ -7,19 +7,40 @@
   "unpkg": "dist/vue-authenticate.js",
   "scripts": {
     "dev": "concurrently --kill-others \"node-dev ./example/server.js\" \"gulp dev\"",
-    "build": "node build/build.js && cp ./dist/vue-authenticate.js ./example/"
+    "build": "node build/build.js && copyfiles ./dist/vue-authenticate.js ./example/"
   },
-  "keywords": ["vue", "vue.js", "vuejs", "json", "jwt", "token", "auth", "authentication", "oauth", "oauth1", "oauth2"],
+  "keywords": [
+    "vue",
+    "vue.js",
+    "vuejs",
+    "json",
+    "jwt",
+    "token",
+    "auth",
+    "authentication",
+    "oauth",
+    "oauth1",
+    "oauth2",
+    "dynamic"
+  ],
   "author": {
     "name": "Davor Grubelic",
     "email": "davor.grubelic@gmail.com",
     "url": "https://dgrubelic.me"
   },
+  "contributors": [
+    {
+      "name": "Mark Dornian",
+      "email": "Mark@IbexConsulting.com"
+    }
+  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/dgrubelic/vue-authenticate.git"
+    "url": "https://github.com/mdornian/vue-authenticate.git"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.4.3",
@@ -30,6 +51,7 @@
     "body-parser": "^1.17.1",
     "concurrently": "^4.1.0",
     "connect-history-api-fallback": "^1.6.0",
+    "copyfiles": "^2.3.0",
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "gulp": "3.9.1",

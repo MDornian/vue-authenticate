@@ -6,7 +6,7 @@ import {
   joinUrl, decodeBase64, getObjectProperty,
 } from './utils.js'
 import defaultOptions from './options.js'
-import StorageFactory from './storage.js'
+import Storage from './storage.js'
 import OAuth1 from './oauth/oauth1.js'
 import OAuth2 from './oauth/oauth2.js'
 
@@ -14,7 +14,7 @@ export default class VueAuthenticate {
   constructor($http, overrideOptions) {
     let options = objectExtend({}, defaultOptions)
     options = objectExtend(options, overrideOptions)
-    let storage = StorageFactory(options)
+    let storage = new Storage(options)
 
     Object.defineProperties(this, {
       $http: {
@@ -124,7 +124,7 @@ export default class VueAuthenticate {
    * @param  {Object} requestOptions Request options
    * @return {Promise}               Request promise
    */
-  login(user, requestOptions) {
+  login(user, requestOptions, storageType) {
     requestOptions = requestOptions || {}
     requestOptions.url = requestOptions.url ? requestOptions.url : joinUrl(this.options.baseUrl, this.options.loginUrl)
     requestOptions[this.options.requestDataKey] = user || requestOptions[this.options.requestDataKey]
@@ -132,9 +132,21 @@ export default class VueAuthenticate {
     requestOptions.withCredentials = requestOptions.withCredentials || this.options.withCredentials
 
     return this.$http(requestOptions).then((response) => {
+      if (storageType) {
+        this.setStorageType(storageType)
+      }
+
       this.setToken(response)
       return response
     })
+  }
+
+  /**
+   * Set the storage type.  This is generally a user level change.  For example, the user logs in and decides whether to remain logged in (home, cell phone) or log out automatically when they leave (library, internet cafe)
+   * @param  {String} storageType    The type of storage.  Accepted values are: cookieStorage, localStorage, memoryStorage, sessionStorage
+   */
+  setStorageType(storageType) {
+    this.storage.setStorageType(storageType, this.tokenName)
   }
 
   /**
