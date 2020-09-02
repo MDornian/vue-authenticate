@@ -1,6 +1,6 @@
 {
   "name": "@mdornian/vue-authenticate",
-  "version": "1.4.7",
+  "version": "1.4.8",
   "description": "Authentication library for Vue.js",
   "main": "dist/vue-authenticate.min.js",
   "module": "dist/vue-authenticate.es2015.js",

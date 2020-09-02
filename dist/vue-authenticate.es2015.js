@@ -1,5 +1,5 @@
 /*!
- * vue-authenticate v1.4.7
+ * vue-authenticate v1.4.8
  * https://github.com/mdornian/vue-authenticate
  * Released under the MIT License.
  */
@@ -1333,6 +1333,31 @@ VueAuthenticate.prototype.isAuthenticated = function isAuthenticated () {
     return true;// Pass: All other tokens
   }
   return false
+};
+
+ /**
+ * Decode the token
+ * @author Mark Dornian <https://github.com/mdornian>
+ * @copyright Method taken from isAuthenticated above
+ * @return {Object}
+ */
+VueAuthenticate.prototype.decode = function decode () {
+  var token = this.storage.getItem(this.tokenName);
+
+  if (token) {// Token is present
+    if (token.split('.').length === 3) {// Token with a valid JWT format XXX.YYY.ZZZ
+      try { // Could be a valid JWT or an access token with the same format
+        var base64Url = token.split('.')[1];
+        var base64 = base64Url.replace('-', '+').replace('_', '/');
+        var jwt = JSON.parse($window.atob(base64));
+        return jwt
+      } catch (e) {
+        return {};// Pass: Non-JWT token that looks like JWT
+      }
+    }
+    return {};// Pass: All other tokens
+  }
+  return {}
 };
 
 /**
