@@ -1,11 +1,10 @@
-{
+module.exports = {
   "presets": [
     [
       "@babel/preset-env",
       {
-        "modules": false
+        "modules": 'commonjs'
       }
     ]
-  ],
-  "plugins": ["external-helpers"]
+  ]
 }

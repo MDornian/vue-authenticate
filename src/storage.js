@@ -5,7 +5,7 @@ import MemoryStorage from './storage/memory-storage.js'
 import SessionStorage from './storage/session-storage.js'
 
 export default class Storage {
-  constructor(options, getTokenName) {
+  constructor(options) {
     // Set the initial storage type
     let storageType = options.defaultStorageType || 'memoryStorage'
     let storageLocations = {}
@@ -30,7 +30,7 @@ export default class Storage {
     this.loadStorageLocations(options)
 
     // Determine if the token is already in storage.  If so, override the storageType to that location
-    const tokenName = getTokenName()
+    const tokenName = options.getTokenName
 
     for (const property in this.storageLocations) {
       if (this.storageLocations[property].getItem(tokenName)) {

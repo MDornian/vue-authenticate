@@ -61,6 +61,14 @@ export default {
     })
   },
 
+  getTokenName: function () {
+    if (this.tokenPrefix) {
+      return [this.tokenPrefix, this.tokenName].join('_')
+    } else {
+      return this.tokenName
+    }
+  },
+
   providers: {
     facebook: {
       name: 'facebook',

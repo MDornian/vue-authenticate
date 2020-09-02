@@ -1,7 +1,7 @@
 var fs = require('fs');
 var rollup = require('rollup');
 var uglify = require('uglify-js');
-var buble = require('rollup-plugin-buble');
+var buble = require('@rollup/plugin-buble');
 var package = require('../package.json');
 var banner =
     "/*!\n" +
@@ -11,14 +11,14 @@ var banner =
     " */\n";
 
 rollup.rollup({
-  entry: 'src/index.js',
+  input: 'src/index.js',
   plugins: [buble()]
 })
 .then(function (bundle) {
   return write('dist/vue-authenticate.js', bundle.generate({
     format: 'umd',
     banner: banner,
-    moduleName: 'VueAuthenticate'
+    name: 'VueAuthenticate'
   }).code, bundle);
 })
 .then(function (bundle) {
@@ -45,14 +45,10 @@ function write(dest, code, bundle) {
   return new Promise(function (resolve, reject) {
     fs.writeFile(dest, code, function (err) {
       if (err) return reject(err);
-      console.log(blue(dest) + ' ' + getSize(code));
+      console.log(blue(dest));
       resolve(bundle);
     });
   });
-}
-
-function getSize(code) {
-  return (code.length / 1024).toFixed(2) + 'kb';
 }
 
 function logError(e) {
