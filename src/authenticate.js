@@ -14,7 +14,16 @@ export default class VueAuthenticate {
   constructor($http, overrideOptions) {
     let options = objectExtend({}, defaultOptions)
     options = objectExtend(options, overrideOptions)
-    let storage = new Storage(options)
+
+    const getTokenName = options => {
+      if (this.options.tokenPrefix) {
+        return [this.options.tokenPrefix, this.options.tokenName].join('_')
+      } else {
+        return this.options.tokenName
+      }
+    }
+
+    let storage = new Storage(options, getTokenName)
 
     Object.defineProperties(this, {
       $http: {
@@ -37,11 +46,7 @@ export default class VueAuthenticate {
 
       tokenName: {
         get() {
-          if (this.options.tokenPrefix) {
-            return [this.options.tokenPrefix, this.options.tokenName].join('_')
-          } else {
-            return this.options.tokenName
-          }
+          return getTokenName()
         }
       },
     })

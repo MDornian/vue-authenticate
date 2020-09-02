@@ -837,7 +837,7 @@ SessionStorage.prototype._getStorageKey = function _getStorageKey (key) {
   return key;
 };
 
-var Storage = function Storage(options) {
+var Storage = function Storage(options, getTokenName) {
   var this$1 = this;
 
   // Set the initial storage type
@@ -864,8 +864,10 @@ var Storage = function Storage(options) {
   this.loadStorageLocations(options);
 
   // Determine if the token is already in storage.If so, override the storageType to that location
+  var tokenName = getTokenName();
+
   for (var property in this$1.storageLocations) {
-    if (this$1.storageLocations[property].getItem()) {
+    if (this$1.storageLocations[property].getItem(tokenName)) {
       this$1.storageType = property;
       break
     }
@@ -1268,9 +1270,20 @@ OAuth2.prototype._stringifyRequestParams = function _stringifyRequestParams () {
 };
 
 var VueAuthenticate = function VueAuthenticate($http, overrideOptions) {
+  var this$1 = this;
+
   var options = objectExtend({}, defaultOptions);
   options = objectExtend(options, overrideOptions);
-  var storage = new Storage(options);
+
+  var getTokenName = function (options) {
+    if (this$1.options.tokenPrefix) {
+      return [this$1.options.tokenPrefix, this$1.options.tokenName].join('_')
+    } else {
+      return this$1.options.tokenName
+    }
+  };
+
+  var storage = new Storage(options, getTokenName);
 
   Object.defineProperties(this, {
     $http: {
@@ -1293,11 +1306,7 @@ var VueAuthenticate = function VueAuthenticate($http, overrideOptions) {
 
     tokenName: {
       get: function get() {
-        if (this.options.tokenPrefix) {
-          return [this.options.tokenPrefix, this.options.tokenName].join('_')
-        } else {
-          return this.options.tokenName
-        }
+        return getTokenName()
       }
     },
   });
