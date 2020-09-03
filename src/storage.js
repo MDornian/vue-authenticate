@@ -30,10 +30,10 @@ export default class Storage {
     this.loadStorageLocations(options)
 
     // Determine if the token is already in storage.  If so, override the storageType to that location
-    const tokenName = options.getTokenName
+    const key = options.getTokenName()
 
     for (const property in this.storageLocations) {
-      if (this.storageLocations[property].getItem(tokenName)) {
+      if (this.storageLocations[property].getItem(key)) {
         this.storageType = property
         break
       }

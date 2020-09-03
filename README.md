@@ -21,10 +21,3 @@ new Vue({
   }
 })
 ```
-
-## Decode JWT
-If you need to decode the JWT token
-
-```javascript
-const jwt = this.$auth.decode()
-```

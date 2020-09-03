@@ -78,31 +78,6 @@ export default class VueAuthenticate {
     return false
   }
 
-   /**
-   * Decode the token
-   * @author Mark Dornian <https://github.com/mdornian>
-   * @copyright Method taken from isAuthenticated above
-   * @return {Object}
-   */
-  decode() {
-    let token = this.storage.getItem(this.tokenName)
-
-    if (token) {  // Token is present
-      if (token.split('.').length === 3) {  // Token with a valid JWT format XXX.YYY.ZZZ
-        try { // Could be a valid JWT or an access token with the same format
-          const base64Url = token.split('.')[1];
-          const base64 = base64Url.replace('-', '+').replace('_', '/');
-          const jwt = JSON.parse($window.atob(base64));
-          return jwt
-        } catch (e) {
-          return {};  // Pass: Non-JWT token that looks like JWT
-        }
-      }
-      return {};  // Pass: All other tokens
-    }
-    return {}
-  }
-
   /**
    * Get token if user is authenticated
    * @return {String} Authentication token
