@@ -7,7 +7,7 @@
   "unpkg": "dist/vue-authenticate.js",
   "scripts": {
     "dev": "concurrently --kill-others \"node-dev ./example/server.js\" \"gulp dev\"",
-    "build": "node build/build.js && copyfiles ./dist/vue-authenticate.js ./example/",
+    "build": "rollup -c && copyfiles ./dist/vue-authenticate.js ./example/",
     "test": "jest"
   },
   "keywords": [
