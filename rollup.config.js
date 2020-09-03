@@ -1,12 +1,25 @@
 import buble from "@rollup/plugin-buble";
+import {uglify} from "rollup-plugin-uglify"
 import {version} from "./package.json";
 
 const banner =
     "/*!\n" +
     " * vue-authenticate v" + version + "\n" +
     " * https://github.com/mdornian/vue-authenticate\n" +
-    " * Released under the MIT License.\n" +
+    " * @license Released under the MIT License.\n" +
     " */\n";
+
+const uglifyComments = {
+  output: {
+    comments: function(node, comment) {
+      if (comment.type === "comment2") {
+        // multiline comment
+        return /@preserve|@license|@cc_on/i.test(comment.value);
+      }
+      return false;
+    }
+  }
+}
 
 export default {
   input: 'src/index.js',
@@ -20,7 +33,9 @@ export default {
     {
       banner: banner,
       file: 'dist/vue-authenticate.min.js',
-      format: 'iife'
+      format: 'iife',
+      name: 'VueAuthenticate',
+      plugins: [uglify(uglifyComments)]
     },
     {
       banner: banner,

@@ -1,7 +1,7 @@
 /*!
  * vue-authenticate v1.4.9
  * https://github.com/mdornian/vue-authenticate
- * Released under the MIT License.
+ * @license Released under the MIT License.
  */
 
 if (typeof Object.assign != 'function') {
