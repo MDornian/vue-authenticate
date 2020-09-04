@@ -1,6 +1,6 @@
 {
   "name": "@mdornian/vue-authenticate",
-  "version": "1.4.9",
+  "version": "1.4.10",
   "description": "Authentication library for Vue.js",
   "main": "dist/vue-authenticate.min.js",
   "module": "dist/vue-authenticate.es2015.js",
@@ -45,7 +45,6 @@
   "license": "MIT",
   "dependencies": {
     "acorn": "^8.0.1",
-    "ajv": "^6.12.4",
     "axios": "^0.20.0",
     "vue": "^2.6.12",
     "vue-axios": "^2.1.5"
@@ -79,8 +78,7 @@
     "webpack-stream": "^6.1.0"
   },
   "peerDependencies": {
-    "acorn": "^8.0.1",
-    "ajv": "^6.9.1"
+    "acorn": "^8.0.1"
   },
   "tags": [
     "auth",
