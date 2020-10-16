@@ -1,5 +1,5 @@
 /*!
- * vue-authenticate v1.4.10
+ * vue-authenticate v1.4.11
  * https://github.com/mdornian/vue-authenticate
  * @license Released under the MIT License.
  */
@@ -1350,6 +1350,10 @@ VueAuthenticate.prototype.setToken = function setToken (response, tokenPath) {
   if (token) {
     this.storage.setItem(this.tokenName, token);
   }
+};
+
+VueAuthenticate.prototype.removeToken = function removeToken () {
+  this.storage.removeItem(this.tokenName);
 };
 
 VueAuthenticate.prototype.getPayload = function getPayload () {

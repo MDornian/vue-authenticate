@@ -103,6 +103,10 @@ export default class VueAuthenticate {
     }
   }
 
+  removeToken() {
+    this.storage.removeItem(this.tokenName)
+  }
+
   getPayload() {
     const token = this.storage.getItem(this.tokenName)
 
