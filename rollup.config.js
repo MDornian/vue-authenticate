@@ -1,5 +1,5 @@
 import buble from "@rollup/plugin-buble";
-import {uglify} from "rollup-plugin-uglify"
+import {terser} from "rollup-plugin-terser"
 import {version} from "./package.json";
 
 const banner =
@@ -9,7 +9,7 @@ const banner =
     " * @license Released under the MIT License.\n" +
     " */\n";
 
-const uglifyComments = {
+const terserComments = {
   output: {
     comments: function(node, comment) {
       if (comment.type === "comment2") {
@@ -35,7 +35,7 @@ export default {
       file: 'dist/vue-authenticate.min.js',
       format: 'iife',
       name: 'VueAuthenticate',
-      plugins: [uglify(uglifyComments)]
+      plugins: [terser(terserComments)]
     },
     {
       banner: banner,

@@ -1,5 +1,5 @@
 /*!
- * vue-authenticate v1.4.11
+ * vue-authenticate v1.4.12
  * https://github.com/mdornian/vue-authenticate
  * @license Released under the MIT License.
  */
@@ -1182,7 +1182,7 @@ OAuth2.prototype.exchangeForToken = function exchangeForToken (oauth, userData) 
   var payload = objectExtend({}, userData);
 
   for (var key in this.providerConfig.responseParams) {
-    var value = this.providerConfig.responseParams[key];
+    this.providerConfig.responseParams[key];
 
     switch(key) {
       case 'code':
